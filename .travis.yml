@@ -1,1 +1,6 @@
 language: java
+services:
+  - docker
+after_install:
+  - docker build -e JAR_FILE=target/k8smonitoring-0.0.1.jar -t aamol/k8smonitoring .
+ 
