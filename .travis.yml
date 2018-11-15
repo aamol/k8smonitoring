@@ -2,5 +2,7 @@ language: java
 services:
   - docker
 after_success:
-  - docker build --build-arg JAR_FILE=target/k8smonitoring-0.0.1.jar -t aamol/k8smonitoring .
+  - docker build --build-arg JAR_FILE=target/k8smonitoring-0.0.1.jar -t aamol/k8smonitoring:$TRAVIS_BUILD_NUMBER .
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker push aamol/k8smonitoring:$TRAVIS_BUILD_NUMBER
  
