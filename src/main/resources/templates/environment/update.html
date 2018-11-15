@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <body>
+    <h1>Select Environment to update</h1>
+    <form action="/env/updateSelected" method="post">
+    
+    <label for="name">Environment Name:</label>
+    
+    <select name="name">
+    	 {{#environment}}
+   			<option value="{{name}}">{{name}}</option>
+   		 {{/environment}}
+    </select>
+    <button type="submit">Submit</button>
+    </form>
+    
+  </body>
+</html>

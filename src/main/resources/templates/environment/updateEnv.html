@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <body>
+    <h1>Update Environments</h1>
+    <form action="/env/update" method="post">
+    <label for="name">Environment Name:</label>
+    <label for="name">{{environment.name}}</label>
+    <label for="masterIP">Kubernetes Master IP :</label>
+    <input type="text" name="masterIP" value="{{environment.masterIP}}"/> </br>
+    <label for="user">Kubernetes User :</label>
+    <input type="text" name="user" value="{{environment.user}}"/></br>
+    <label for="password">Kubernetes Password :</label>
+    <input type="password" name="password" value="{{environment.password}}"/></br>
+    <button type="submit">Submit</button>
+    </form>
+    
+  </body>
+</html>

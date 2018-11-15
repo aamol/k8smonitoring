@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <body>
+  	<h1><a href="/">HOME</a>
+    <h1>Deployments {{env}}</h1>
+    <table style="width:100%" border="1">
+    <tr>
+    <th>Application</th>
+    <th>ImageName</th>
+    <th>Desired</th> 
+    <th>Available</th>  
+  </tr>
+    {{#deployment}}
+    	{{#items}}
+    		<tr>
+    			<td>{{metadata.name}} </td>
+    			<td>
+    			{{#spec.template.spec.containers}}
+    			{{image}} 
+    			{{/spec.template.spec.containers}}
+    			</td>
+    			<td>{{status.replicas}}</td>
+    			<td>{{status.readyReplicas}}</td>
+    		</tr>
+    	{{/items}}
+    {{/deployment}}
+    </table>
+  </body>
+</html>

@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <body>
+    <h1>Monitoring Dashboard</h1>
+    <a href="/env/home">Manage Environments</a>
+    </br>
+    </br>
+    </br>
+    <h3>Available Environments</h3>
+    
+    {{#environment}}
+    <a href="/deployment/getDeployment?env={{name}}">{{name}}</a> </br>
+    {{/environment}}
+    
+  </body>
+</html>
