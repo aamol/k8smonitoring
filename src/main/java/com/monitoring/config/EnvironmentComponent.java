@@ -27,20 +27,24 @@ public class EnvironmentComponent {
 
 		return environments;
 	}
-	
+
 	public void addUpdateEnvironmentDetails(Environment environment) {
-		
+
 		Environment object = repository.findByName(environment.getName());
-		object.setMasterIP(environment.getMasterIP());
-		object.setPassword(environment.getPassword());
-		object.setUser(environment.getUser());
+		if (null == object) {
+			object = new Environment(environment.getName(), environment.getMasterIP(), environment.getUser(),
+					environment.getPassword());
+		} else {
+			object.setMasterIP(environment.getMasterIP());
+			object.setPassword(environment.getPassword());
+			object.setUser(environment.getUser());
+		}
 		repository.save(object);
 
 	}
-	
+
 	public void deleteEnvironment(Environment environment) {
 		repository.delete(environment);
 	}
 
-	
 }
