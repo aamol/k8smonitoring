@@ -23,8 +23,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.client.RestTemplate;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.monitoring.config.EnvironmentComponent;
-import com.monitoring.dto.Deployment;
 import com.monitoring.dto.Environment;
 
 @Controller
@@ -53,11 +53,10 @@ public class DeploymentController {
 
 
 		String URL = "https://"+env.getMasterIP()+"/apis/apps/v1/namespaces/"+namespace+"/deployments";
-		ResponseEntity<Deployment> deployment = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<String>(createHeaders(env.getUser(), env.getPassword())), Deployment.class);
+		ResponseEntity<Object> deployment = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<String>(createHeaders(env.getUser(), env.getPassword())), Object.class);
 		//System.out.println(deployment.getBody().toString());
 		model.addAttribute("env", environmentName);
 		model.addAttribute("deployment",deployment.getBody());
-		
         return "deployment";
         //return a.getBody();
     }
