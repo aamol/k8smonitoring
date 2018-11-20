@@ -1,5 +1,6 @@
 package com.monitoring.config;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +25,15 @@ public class EnvironmentComponent {
 	public List<Environment> getAllEnvironments() {
 
 		List<Environment> environments = repository.findAll();
-
+		Comparator<Environment> comparator = new Comparator<Environment>() {
+			@Override
+			public int compare(final Environment env1, final Environment env2) {
+				// let your comparator look up your car's color in the custom order
+				return Integer.valueOf(environments.indexOf(env1.getName()))
+						.compareTo(Integer.valueOf(environments.indexOf(env2.getName())));
+			}
+		};
+		environments.sort(comparator);
 		return environments;
 	}
 
