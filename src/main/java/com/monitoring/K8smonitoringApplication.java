@@ -15,16 +15,14 @@ public class K8smonitoringApplication {
 		SpringApplication.run(K8smonitoringApplication.class, args);
 	}
 	
-//	@Bean
-//    public Mustache.Compiler mustacheCompiler(Mustache.TemplateLoader templateLoader, Environment environment) {
-//
-//        MustacheEnvironmentCollector collector = new MustacheEnvironmentCollector();
-//        collector.setEnvironment(environment);
-//        return Mustache.compiler();
-//        return Mustache.compiler()
-//          .defaultValue("Some Default Value")
-//          .withLoader(templateLoader)
-//          .withCollector(collector);
+	@Bean
+    public Mustache.Compiler mustacheCompiler(Mustache.TemplateLoader templateLoader, Environment environment) {
 
-//    }
+        MustacheEnvironmentCollector collector = new MustacheEnvironmentCollector();
+        collector.setEnvironment(environment);
+        return Mustache.compiler()
+          .defaultValue(" ")
+          .withLoader(templateLoader)
+          .withCollector(collector);
+    }
 }
