@@ -29,13 +29,13 @@ import com.monitoring.config.EnvironmentComponent;
 import com.monitoring.dto.Environment;
 
 @Controller
-@RequestMapping("/deployment")
-public class DeploymentController {
+@RequestMapping("/hpa")
+public class HPAController {
 	
 	@Autowired
 	EnvironmentComponent environmentConifg;
 	
-	@GetMapping("/getDeployment")
+	@GetMapping("/getAll")
     public String getDeployment(@RequestParam(name="env", required=true, defaultValue="DEV01") String environmentName,@RequestParam(name="namespace", required=false) String namespace, Model model) throws Exception {
 		Environment env = environmentConifg.getEnvironmentDetails(environmentName);
 		//RestTemplate  restTemplate = new RestTemplate();
@@ -55,13 +55,12 @@ public class DeploymentController {
 			namespace=env.getDefaultNameSpace();
 		}
 
-		String URL = "https://"+env.getMasterIP()+"/apis/apps/v1/namespaces/"+namespace+"/deployments";
-		ResponseEntity<Object> deployment = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<String>(createHeaders(env.getUser(), env.getPassword())), Object.class);
-		//System.out.println(deployment.getBody().toString());
+		String URL = "https://"+env.getMasterIP()+"/apis/autoscaling/v1/namespaces/"+namespace+"/horizontalpodautoscalers";
+		ResponseEntity<Object> hpa = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<String>(createHeaders(env.getUser(), env.getPassword())), Object.class);
 		model.addAttribute("env", environmentName);
 		model.addAttribute("namespace", namespace);
-		model.addAttribute("deployment",deployment.getBody());
-        return "deployment";
+		model.addAttribute("hpa",hpa.getBody());
+        return "hpa";
         //return a.getBody();
     }
 	

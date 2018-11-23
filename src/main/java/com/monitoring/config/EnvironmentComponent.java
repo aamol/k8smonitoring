@@ -42,11 +42,12 @@ public class EnvironmentComponent {
 		Environment object = repository.findByName(environment.getName());
 		if (null == object) {
 			object = new Environment(environment.getName(), environment.getMasterIP(), environment.getUser(),
-					environment.getPassword());
+					environment.getPassword(),environment.getDefaultNameSpace());
 		} else {
 			object.setMasterIP(environment.getMasterIP());
 			object.setPassword(environment.getPassword());
 			object.setUser(environment.getUser());
+			object.setDefaultNameSpace(environment.getDefaultNameSpace());
 		}
 		repository.save(object);
 

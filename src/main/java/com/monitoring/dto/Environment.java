@@ -20,6 +20,9 @@ public class Environment {
 
 	@NotNull
 	String password;
+	
+	@NotNull
+	String defaultNameSpace;
 
 	public String getMasterIP() {
 		return masterIP;
@@ -45,12 +48,14 @@ public class Environment {
 		this.password = password;
 	}
 
-	public Environment(@NotNull String name ,@NotNull String masterIP, @NotNull String user, @NotNull String password) {
+	public Environment(@NotNull String name, @NotNull String masterIP, @NotNull String user, @NotNull String password,
+			@NotNull String defaultNameSpace) {
 		super();
 		this.masterIP = masterIP;
 		this.user = user;
 		this.password = password;
-		this.name=name;
+		this.name = name;
+		this.defaultNameSpace = defaultNameSpace;
 	}
 
 	@Override
@@ -73,6 +78,14 @@ public class Environment {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getDefaultNameSpace() {
+		return defaultNameSpace;
+	}
+
+	public void setDefaultNameSpace(String defaultNameSpace) {
+		this.defaultNameSpace = defaultNameSpace;
 	}
 
 }

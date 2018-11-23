@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <body>
+  	<h1><a href="/">HOME</a>
+    <h1>HPA on Env  {{env}} on Namespace {{namespace}}</h1> <h2><a href="/deployment/getDeployment?env={{env}}&namespace={{namespace}}">Deployments</a></h2>
+    <table style="width:100%" border="1">
+    <tr>
+    <th>APPLICATION</th>
+    <th>TARGETS</th>
+    <th>MINPODS</th> 
+    <th>MAXPODS</th>
+    <th>CURRENT REPLICAS</th>  
+  </tr>
+    {{#hpa}}
+    	{{#items}}
+    		<tr>
+    			<td align="left">{{metadata.name}} </td>
+    			<td align="center">{{status.currentCPUUtilizationPercentage}}% / {{spec.targetCPUUtilizationPercentage}}</td>
+    			<td align="center">{{spec.minReplicas}}</td>
+    			<td align="center">{{spec.maxReplicas}}</td>
+    			<td align="center">{{status.currentReplicas}}</td>
+    		</tr>
+    	{{/items}}
+    {{/hpa}}
+    </table>
+  </body>
+</html>
