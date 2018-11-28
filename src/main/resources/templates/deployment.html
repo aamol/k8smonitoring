@@ -8,7 +8,8 @@
     <th>Application</th>
     <th>ImageName</th>
     <th>Desired</th> 
-    <th>Available</th>  
+    <th>Available</th>
+    <th>Last Deployment Time</th>  
   </tr>
     {{#deployment}}
     	{{#items}}
@@ -21,6 +22,7 @@
     			</td>
     			<td>{{status.replicas}}</td>
     			<td>{{status.readyReplicas}}</td>
+    			<td>{{status.conditions.0.lastUpdateTime}}</td>
     		</tr>
     	{{/items}}
     {{/deployment}}
