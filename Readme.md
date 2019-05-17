@@ -13,7 +13,5 @@ You can configure the environments(Currently only username and password is suppo
 
 This is a sping boot based application which uses mongo to store the credentails. Hence to start the application pull the image from k8smonitoring and mongo from docker hub and start using . here are the commands
 
-> docker run --name monitoring-mongo -v /app/mongo/datadir:/data/db -d
-> mongo docker run --link monitoring-mongo:monitoring-mongo -e
-> SPRING_DATA_MONGODB_HOST=monitoring-mongo --name k8smonitoring -p
-> 8080:8080 -d aamol/k8smonitoring:<tag>
+> docker run --name monitoring-mongo -v /app/mongo/datadir:/data/db -d mongo 
+> docker run --link monitoring-mongo:monitoring-mongo -e SPRING_DATA_MONGODB_HOST=monitoring-mongo --name k8smonitoring -p 8080:8080 -d aamol/k8smonitoring:<tag>
