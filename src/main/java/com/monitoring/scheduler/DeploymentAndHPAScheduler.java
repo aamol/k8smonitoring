@@ -11,13 +11,10 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestTemplate;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -29,7 +26,7 @@ import com.monitoring.dto.Deployments.Deployment;
 import com.monitoring.dto.HPA.HorizontalPodAutoscaler;
 import com.monitoring.dto.NameSpaces.Item;
 import com.monitoring.dto.NameSpaces.NameSpaces;
-import com.monitoring.utility.ProjectUtility;
+import com.monitoring.utility.APIUtilitiy;
 
 @Component
 public class DeploymentAndHPAScheduler {
@@ -40,6 +37,8 @@ public class DeploymentAndHPAScheduler {
 	DeploymentConfig deploymentConfig;
 	@Autowired
 	HPAConfig hpaConfig;
+	@Autowired
+	APIUtilitiy apiUtility;
 	@Value("#{'${skippedNameSpaces}'.split(',')}")
 	private List<String> skippedNameSpaces;
 	
@@ -47,23 +46,20 @@ public class DeploymentAndHPAScheduler {
 	
 	private static final Logger log = LoggerFactory.getLogger(DeploymentAndHPAScheduler.class);
 	
-	@Scheduled(fixedDelay = 3600000, initialDelay = 5000)
+	@Scheduled(fixedDelayString = "${schedulerFrequency}", initialDelay = 5000)
 	public void populateDeploymentsData() {
 		
 		log.info("Scheduler execution started");
 		List<Environment> environments = environmentConifg.getAllEnvironments();
 		try {
-			HttpComponentsClientHttpRequestFactory requestFactory = ProjectUtility.getRequestFactory();
-			RestTemplate restTemplate = new RestTemplate(requestFactory);
 			for (Environment env : environments) {
-				String URLforNameSpaces = "https://"+env.getMasterIP()+"/api/v1/namespaces";
 				if (objectMapper == null ) {
 					objectMapper = new ObjectMapper();
 				}
-				ResponseEntity<Object> nameSpacesResponse = restTemplate.exchange(URLforNameSpaces, HttpMethod.GET, new HttpEntity<String>(ProjectUtility.createHeaders(env.getUser(), env.getPassword())), Object.class);
+				String namespacesURL = "https://"+env.getMasterIP()+"/api/v1/namespaces";
+				ResponseEntity<Object> nameSpacesResponse = apiUtility.makeAPICall(namespacesURL, HttpMethod.GET, env);
 				Gson gson = new GsonBuilder().create();
 				String jsonNameSpacesResult = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(nameSpacesResponse.getBody());
-//				NameSpaces nameSpaces = gson.fromJson(JSON.serialize(nameSpacesResponse.getBody()), NameSpaces.class);
 				NameSpaces nameSpaces = gson.fromJson(jsonNameSpacesResult, NameSpaces.class);
 				if (nameSpaces != null && nameSpaces.getItems() != null) {
 					for (Item item : nameSpaces.getItems()) {
@@ -71,23 +67,19 @@ public class DeploymentAndHPAScheduler {
 							continue;
 						}
 						
-						String URL = "https://"+env.getMasterIP()+"/apis/apps/v1/namespaces/"+ item.getMetadata().getName() +"/deployments";
 						log.info("Populating Deployment information for environment = {} namespace = {}", env.getName(), item.getMetadata().getName());
-						ResponseEntity<Object> deployments = restTemplate.exchange(URL, HttpMethod.GET, new HttpEntity<String>(ProjectUtility.createHeaders(env.getUser(), env.getPassword())), Object.class);
-						String jsonDeploymentResult = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(deployments.getBody());
+						String deploymentsURL = "https://"+ env.getMasterIP() +"/apis/apps/v1/namespaces/" + item.getMetadata().getName() + "/deployments";
+						ResponseEntity<Object> deploymentResponse = apiUtility.makeAPICall(deploymentsURL, HttpMethod.GET, env);
+						String jsonDeploymentResult = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(deploymentResponse.getBody());
 						Deployment deployment = gson.fromJson(jsonDeploymentResult, Deployment.class);
-//						Deployment deployment = gson.fromJson(JSON.serialize(deployments.getBody()), Deployment.class);
 						deploymentConfig.addDeployments(deployment);
-						log.info("Deployment data populated scuccessfully");
 						
-						String hpaURL = "https://"+env.getMasterIP()+"/apis/autoscaling/v1/namespaces/"+ item.getMetadata().getName() +"/horizontalpodautoscalers";
 						log.info("Populating HPA information for environment = {} namespace = {}", env.getName(), item.getMetadata().getName());
-						ResponseEntity<Object> hpa = restTemplate.exchange(hpaURL, HttpMethod.GET, new HttpEntity<String>(ProjectUtility.createHeaders(env.getUser(), env.getPassword())), Object.class);
-						String jsonHPAResult = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(hpa.getBody());
-//						HorizontalPodAutoscaler horizontalPodAutoscaler = gson.fromJson(JSON.serialize(hpa.getBody()), HorizontalPodAutoscaler.class);
+						String hpaURL = "https://"+env.getMasterIP()+"/apis/autoscaling/v1/namespaces/"+ item.getMetadata().getName() +"/horizontalpodautoscalers";
+						ResponseEntity<Object> hpaResponse = apiUtility.makeAPICall(hpaURL, HttpMethod.GET, env);
+						String jsonHPAResult = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(hpaResponse.getBody());
 						HorizontalPodAutoscaler horizontalPodAutoscaler = gson.fromJson(jsonHPAResult, HorizontalPodAutoscaler.class);
 						hpaConfig.addHPA(horizontalPodAutoscaler);
-						log.info("HPA data populated scuccessfully");
 					}
 				}
 			}
