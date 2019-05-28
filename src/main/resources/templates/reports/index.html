@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+<script type="text/javascript">
+
+var dataRows =[];
+
+</script>
+</head>
+  <body>
+    <h1>Report</h1>
+    <form name="report" action="/reports/submit" method="post">
+    
+    <label for="envName">Environment Name:</label>
+    <select name="envName" onchange="this.form.submit()">
+    	 {{#environments}}
+   			<option value="{{name}}">{{{name}}}</option>
+   		 {{/environments}}
+    </select>
+    {{#envName}}
+    <label for="namespace">Namespace Name:</label>
+    <select name="namespace">
+    	 {{#namespaces}}
+   			<option value="{{.}}">{{.}}</option>
+   		 {{/namespaces}}
+    </select>
+    {{/envName}}
+    {{#namespace}}
+    <label for="deployment">Deployment Name:</label>
+    <select name="deployment">
+    	 {{#deployments}}
+   			<option value="{{.}}">{{.}}</option>
+   		 {{/deployments}}
+    </select>
+    <label for="startDate">Start date:</label>
+    <input type="date" name="startDate">
+	<label for="namespace">End date:</label>
+    <input type="date" name="endDate">
+    {{/namespace}}
+	<button type="submit">Submit</button>
+    </form>
+    {{#reportData}}
+    	    	<script type="text/javascript"> 
+    	dataRows.push(['{{timeNow}}',{{status.currentReplicas}},{{status.currentCPUUtilizationPercentage}}]) ;
+    	</script>
+    {{/reportData}}
+    <br><br>
+  	<div id="chart_div"></div>
+  	<script>
+     google.charts.load('current', {'packages':['line', 'corechart']});
+      google.charts.setOnLoadCallback(drawChart);
+
+    function drawChart() {
+
+      var data = new google.visualization.DataTable();
+      data.addColumn('date', 'Date');
+      data.addColumn('number', "Replica");
+      data.addColumn('number', "CPU");
+			for(var i = 0; i < dataRows.length; i++) {
+			    var dataRow = dataRows[i];
+			    data.addRow([new Date(dataRow[0]),dataRow[1],dataRow[2]]);
+			}
+      var button = document.getElementById('change-chart');
+      var chartDiv = document.getElementById('chart_div');
+      var materialOptions = {
+        chart: {
+          title: 'Kubernetes Deployment Status '
+        },
+        width: 1200,
+        height: 500,
+        series: {
+          // Gives each series an axis name that matches the Y-axis below.
+          0: {axis: 'Replicas'},
+          1: {axis: 'CPU'}
+        },
+        axes: {
+          // Adds labels to each axis; they don't have to match the axis names.
+          y: {
+            Temps: {label: 'Replicas'},
+            Daylight: {label: 'CPU'}
+          }
+        }
+      };
+
+
+      function drawMaterialChart() {
+        var materialChart = new google.charts.Line(chartDiv);
+        materialChart.draw(data, materialOptions);
+      }
+
+
+      drawMaterialChart();
+
+    }
+  	
+  	</script>
+  </body>
+</html>

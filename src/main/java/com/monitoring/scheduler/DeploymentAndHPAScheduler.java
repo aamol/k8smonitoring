@@ -72,6 +72,7 @@ public class DeploymentAndHPAScheduler {
 						ResponseEntity<Object> deploymentResponse = apiUtility.makeAPICall(deploymentsURL, HttpMethod.GET, env);
 						String jsonDeploymentResult = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(deploymentResponse.getBody());
 						Deployment deployment = gson.fromJson(jsonDeploymentResult, Deployment.class);
+						deployment.setEnvironment(env.getName());
 						deploymentConfig.addDeployments(deployment);
 						
 						log.info("Populating HPA information for environment = {} namespace = {}", env.getName(), item.getMetadata().getName());
@@ -79,6 +80,7 @@ public class DeploymentAndHPAScheduler {
 						ResponseEntity<Object> hpaResponse = apiUtility.makeAPICall(hpaURL, HttpMethod.GET, env);
 						String jsonHPAResult = objectMapper.writerWithDefaultPrettyPrinter().writeValueAsString(hpaResponse.getBody());
 						HorizontalPodAutoscaler horizontalPodAutoscaler = gson.fromJson(jsonHPAResult, HorizontalPodAutoscaler.class);
+						horizontalPodAutoscaler.setEnvironment(env.getName());
 						hpaConfig.addHPA(horizontalPodAutoscaler);
 					}
 				}

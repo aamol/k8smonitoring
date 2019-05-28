@@ -16,6 +16,7 @@ public class Deployment {
 	List<Item> items;
 	MetaData metadata;
 	Date timeNow = new Date();
+	String environment;
 	
 	public String getKind() {
 		return kind;
@@ -40,6 +41,9 @@ public class Deployment {
 	}
 	public void setMetaData(MetaData metadata) {
 		this.metadata = metadata;
+	}
+	public void setEnvironment(String environment) {
+		this.environment = environment;
 	}
 
 

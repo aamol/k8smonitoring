@@ -15,6 +15,7 @@ public class HorizontalPodAutoscaler {
 	List<Item> items;
 	MetaData metadata;
 	Date timeNow = new Date();
+	String environment;
 	
 	public String getKind() {
 		return kind;
@@ -39,6 +40,18 @@ public class HorizontalPodAutoscaler {
 	}
 	public void setMetadata(MetaData metadata) {
 		this.metadata = metadata;
+	}
+	public void setEnvironment(String environment) {
+		this.environment = environment;
+	}
+	public Date getTimeNow() {
+		return timeNow;
+	}
+	public void setTimeNow(Date timeNow) {
+		this.timeNow = timeNow;
+	}
+	public String getEnvironment() {
+		return environment;
 	}
 
 }
