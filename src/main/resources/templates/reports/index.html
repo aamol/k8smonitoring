@@ -13,7 +13,7 @@ var dataRows =[];
     <form name="report" action="/reports/submit" method="post">
     
     <label for="envName">Environment Name:</label>
-    <select name="envName" onchange="this.form.submit()">
+    <select name="envName">
     	 {{#environments}}
    			<option value="{{name}}">{{{name}}}</option>
    		 {{/environments}}
