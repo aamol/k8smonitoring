@@ -18,9 +18,7 @@ public class ReportDTO implements Serializable,Comparable<Object> {
 	Status status;
 
 	public String getTimeNow() {
-		System.out.println(timeNow);
 		SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy HH:mm:ss Z");
-		System.out.println("Before --------> " + timeNow +" After ---->" + dateFormat.format(timeNow));
 		return dateFormat.format(timeNow);
 	}
 
