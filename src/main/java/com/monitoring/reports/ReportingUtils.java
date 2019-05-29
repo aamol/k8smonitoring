@@ -65,6 +65,7 @@ public class ReportingUtils {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		Date start = dateFormat.parse(startDate);
 		Date end = dateFormat.parse(endDate);
+		end.setTime(end.getTime()+24*60*60*1000);
 		MatchOperation matchStage = Aggregation
 				.match(new Criteria("environment").is(envName).and("items.metadata.namespace").is(namespace)
 						.and("items.metadata.name").is(deployment).and("timeNow").gte(start).lte(end));
