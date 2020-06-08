@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <body>
+    <h1>Select DeploymentApplication to update</h1>
+    <form action="/env/updateSelected" method="post">
+    
+    <label for="name">DeploymentApplication Name:</label>
+    
+    <select name="name">
+    	 {{#deploymentapplication}}
+   			<option value="{{name}}">{{name}}</option>
+   		 {{/deploymentapplication}}
+    </select>
+    <button type="submit">Submit</button>
+    </form>
+    
+  </body>
+</html>
