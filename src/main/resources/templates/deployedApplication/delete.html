@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="en">
+  <body>
+    <h1>Select Application to Delete</h1>
+    <form action="/deployedApplications/deleteSelected" method="post">
+    
+    <label for="name">Application Name:</label>
+    
+    <select name="name">
+    	 {{#deployedapplication}}
+   			<option value="{{name}}">{{name}}</option>
+   		 {{/deployedapplication}}
+    </select>
+    <button type="submit">Submit</button>
+    </form>
+    
+  </body>
+</html>

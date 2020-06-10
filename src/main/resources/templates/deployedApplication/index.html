@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="en">
+  <body>
+  {{#isAdmin}}
+  	<h1>Manage Deployed Applications</h1>
+	<br/>
+	<a href="/deployedApplications/add">Add Application Details</a><t/>
+	<a href="/deployedApplications/updateSelect">Update Application Details</a><t/>
+	<a href="/deployedApplications/deleteSelect">Delete Application Details</a>
+	<br/><br/>
+  {{/isAdmin}}
+    <h1>Deployed Applications</h1>
+    {{#deployedapplications}}
+    	<a href="http://{{host}}:{{port}}" target="_blank">{{name}}</a> </br>
+    {{/deployedapplications}}
+  </body>
+</html>
