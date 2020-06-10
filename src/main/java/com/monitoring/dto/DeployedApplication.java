@@ -2,12 +2,21 @@ package com.monitoring.dto;
 
 import javax.validation.constraints.NotNull;
 
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document(collection = "deployedapplication")
 public class DeployedApplication {
+	
+	@Id
+	String id;
+	
 	@NotNull
 	String host;
+	
 	@NotNull
 	String port;
-
+	
 	@NotNull
 	String name;
 
@@ -34,6 +43,16 @@ public class DeployedApplication {
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	
+
+	public String getId() {
+		return id;
+	}
+
+	public void setId(String id) {
+		this.id = id;
+	}
 
 	public DeployedApplication(@NotNull String host, @NotNull String port, @NotNull String name) {
 		super();
@@ -44,11 +63,7 @@ public class DeployedApplication {
 
 	@Override
 	public String toString() {
-		return "DeploymentApplication [host=" + host + ", name=" + name + ", port=" + port + "]";
-
+		return "DeployedApplication [id=" + id + ", host=" + host + ", port=" + port + ", name=" + name + "]";
 	}
-
 	
-	}
-
-
+}

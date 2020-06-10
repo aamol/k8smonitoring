@@ -2,14 +2,14 @@
 <html lang="en">
   <body>
     <h1>Select DeploymentApplication to update</h1>
-    <form action="/env/updateSelected" method="post">
+    <form action="/deployedApplications/updateSelected" method="post">
     
-    <label for="name">DeploymentApplication Name:</label>
+    <label for="name">Application Name:</label>
     
     <select name="name">
-    	 {{#deploymentapplication}}
+    	 {{#deployedapplications}}
    			<option value="{{name}}">{{name}}</option>
-   		 {{/deploymentapplication}}
+   		 {{/deployedapplications}}
     </select>
     <button type="submit">Submit</button>
     </form>

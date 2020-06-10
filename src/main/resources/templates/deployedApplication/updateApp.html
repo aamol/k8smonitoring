@@ -1,0 +1,16 @@
+<!doctype html>
+<html lang="en">
+  <body>
+    <h1>Update Application</h1>
+    <form action="/deployedApplications/update" method="post">
+    <label for="name" >Application Name:</label>
+    <input type="text" name="name" value="{{deployedapplication.name}}" readonly /></br>
+    <label for="host">Application host :</label>
+    <input type="text" name="host" value="{{deployedapplication.host}}"/> </br>
+    <label for="user">Application port :</label>
+    <input type="port" name="port" value="{{deployedapplication.port}}"/></br>
+    <button type="submit">Submit</button>
+    </form>
+    
+  </body>
+</html>
