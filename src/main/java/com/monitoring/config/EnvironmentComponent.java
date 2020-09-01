@@ -45,12 +45,13 @@ public class EnvironmentComponent {
 		Environment object = repository.findByName(environment.getName());
 		if (null == object) {
 			object = new Environment(environment.getName(), environment.getMasterIP(), environment.getUser(),
-					environment.getPassword(),environment.getDefaultNameSpace());
+					environment.getPassword(),environment.getDefaultNameSpace(),environment.getSaToken());
 		} else {
 			object.setMasterIP(environment.getMasterIP());
 			object.setPassword(environment.getPassword());
 			object.setUser(environment.getUser());
 			object.setDefaultNameSpace(environment.getDefaultNameSpace());
+			object.setSaToken(environment.getSaToken());
 		}
 		repository.save(object);
 

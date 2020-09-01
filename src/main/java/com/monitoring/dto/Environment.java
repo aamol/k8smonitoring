@@ -15,14 +15,15 @@ public class Environment {
 	@NotNull
 	String masterIP;
 
-	@NotNull
 	String user;
 
-	@NotNull
 	String password;
 	
 	@NotNull
 	String defaultNameSpace;
+	
+	String saToken;
+	
 
 	public String getMasterIP() {
 		return masterIP;
@@ -48,28 +49,24 @@ public class Environment {
 		this.password = password;
 	}
 
-	public Environment(@NotNull String name, @NotNull String masterIP, @NotNull String user, @NotNull String password,
-			@NotNull String defaultNameSpace) {
-		super();
-		this.masterIP = masterIP;
-		this.user = user;
-		this.password = password;
-		this.name = name;
-		this.defaultNameSpace = defaultNameSpace;
-	}
-
-	@Override
-	public String toString() {
-		return "Environment [id=" + id + ", name=" + name + ", masterIP=" + masterIP + ", user=" + user + ", password="
-				+ password + "]";
-	}
-
 	public String getId() {
 		return id;
 	}
 
 	public void setId(String id) {
 		this.id = id;
+	}
+
+	public Environment(@NotNull String name, @NotNull String masterIP, String user, String password,
+			@NotNull String defaultNameSpace, String saToken) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.masterIP = masterIP;
+		this.user = user;
+		this.password = password;
+		this.defaultNameSpace = defaultNameSpace;
+		this.saToken = saToken;
 	}
 
 	public String getName() {
@@ -86,6 +83,20 @@ public class Environment {
 
 	public void setDefaultNameSpace(String defaultNameSpace) {
 		this.defaultNameSpace = defaultNameSpace;
+	}
+
+	public String getSaToken() {
+		return saToken;
+	}
+
+	public void setSaToken(String saToken) {
+		this.saToken = saToken;
+	}
+
+	@Override
+	public String toString() {
+		return "Environment [id=" + id + ", name=" + name + ", masterIP=" + masterIP + ", user=" + user + ", password="
+				+ password + ", defaultNameSpace=" + defaultNameSpace + ", saToken=" + saToken + "]";
 	}
 
 }

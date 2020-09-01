@@ -42,27 +42,36 @@ public class APIUtilitiy {
 		return requestFactory;
 	}
 	
-	public HttpHeaders createHeaders(String username, String password){
+	public HttpHeaders createHeaders(Environment environment){
+			
+		if(environment.getSaToken().isEmpty()) {
 		   return new HttpHeaders() {{
-		         String auth = username + ":" + password;
+		         String auth = environment.getUser() + ":" + environment.getPassword();
 		         byte[] encodedAuth = Base64.encodeBase64( 
 		            auth.getBytes(Charset.forName("US-ASCII")) );
 		         String authHeader = "Basic " + new String( encodedAuth );
 		         set( "Authorization", authHeader );
 		      }};
+		}else {
+			return new HttpHeaders() {{
+		         String auth = environment.getUser() + ":" + environment.getPassword();
+		         String authHeader = "Bearer " + new String( Base64.decodeBase64(environment.getSaToken()) );
+		         set( "Authorization", authHeader );
+		      }};
+		}
 		}
 	
 	public ResponseEntity<Object> makeAPICall (String apiURL, HttpMethod httpMethod, Environment environment) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
 //		String apiURL = "https://"+ environment.getMasterIP() +"/apis/apps/v1/namespaces/" + namespace + "/" + apiName;
 		RestTemplate restTemplate = new RestTemplate(getRequestFactory());
-		ResponseEntity<Object> response = restTemplate.exchange(apiURL, httpMethod, new HttpEntity<String>(createHeaders(environment.getUser(), environment.getPassword())), Object.class);
+		ResponseEntity<Object> response = restTemplate.exchange(apiURL, httpMethod, new HttpEntity<String>(createHeaders(environment)), Object.class);
 		return response;
 	}
 	
 	public ResponseEntity<Object> getNameSpaces (HttpMethod httpMethod, Environment environment) throws KeyManagementException, NoSuchAlgorithmException, KeyStoreException {
 		String URL = "https://"+ environment.getMasterIP() +"/api/v1/namespaces";
 		RestTemplate restTemplate = new RestTemplate(getRequestFactory());
-		ResponseEntity<Object> response = restTemplate.exchange(URL, httpMethod, new HttpEntity<String>(createHeaders(environment.getUser(), environment.getPassword())), Object.class);
+		ResponseEntity<Object> response = restTemplate.exchange(URL, httpMethod, new HttpEntity<String>(createHeaders(environment)), Object.class);
 		return response;
 	}
 	
