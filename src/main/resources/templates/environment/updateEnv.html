@@ -3,17 +3,26 @@
   <body>
     <h1>Update Environments</h1>
     <form action="/env/update" method="post">
-    <label for="name" >Environment Name:</label>
-    <input type="text" name="name" value="{{environment.name}}" readonly /></br>
-    <label for="masterIP">Kubernetes Master IP :</label>
-    <input type="text" name="masterIP" value="{{environment.masterIP}}"/> </br>
-    <label for="user">Kubernetes User :</label>
-    <input type="text" name="user" value="{{environment.user}}"/></br>
-    <label for="password">Kubernetes Password :</label>
-    <input type="password" name="password" value="{{environment.password}}"/></br>
-    <label for="defaultNameSpace">Kubernetes Default Namespace:</label>
-    <input type="text" name="defaultNameSpace" value="{{environment.defaultNameSpace}}"/></br>
-    <button type="submit">Submit</button>
+	    <label for="name" >Environment Name:</label>
+	    <input type="text" name="name" value="{{environment.name}}" readonly /></br>
+	    
+	    <label for="masterIP">Kubernetes Master IP :</label>
+	    <input type="text" name="masterIP" value="{{environment.masterIP}}"/> </br>
+	    
+	    <label for="user">Kubernetes User :</label>
+	    <input type="text" name="user" value="{{environment.user}}"/></br>
+	    
+	    <label for="password">Kubernetes Password :</label>
+	    <input type="password" name="password" value="{{environment.password}}"/></br>
+	    
+	    <label for="saToken">Service Account Token:</label>
+	    <input type="textbox" name="saToken" /></br>
+	    
+	    <label for="defaultNameSpace">Kubernetes Default Namespace:</label>
+	    <input type="text" name="defaultNameSpace" value="{{environment.defaultNameSpace}}"/></br>
+	    
+	        
+	    <button type="submit">Submit</button>
     </form>
     
   </body>

@@ -7,7 +7,7 @@ Using the kubernetes and having multiple environments sometime has an overhead o
 
 **What ?** 
 
-You can configure the environments(Currently only username and password is supported) and then it will fetch all the deployments from the environments along with the image version
+You can configure the environments and then it will fetch all the deployments from the environments along with the image version
 
 **How ?**
 
@@ -17,3 +17,16 @@ This is a sping boot based application which uses mongo to store the credentails
 docker run --name monitoring-mongo -v /app/mongo/datadir:/data/db -d mongo 
 docker run --link monitoring-mongo:monitoring-mongo -e SPRING_DATA_MONGODB_HOST=monitoring-mongo --name k8smonitoring -p 8080:8080 -d aamol/k8smonitoring:<tag>
 ```
+
+**Environment configuration**
+If you have access to username and password for kubernetes API you can use the same. Incase not you can create a service account and configure the token in Service account token
+
+To create service account you can execute 
+
+ - yaml/sa.yaml
+ - yaml/clusterrolebinding.yaml
+
+TOKENNAME=`kubectl get serviceaccount/monitoring-service-account -o jsonpath='{.secrets[0].name}'`
+
+kubectl get secret $TOKENNAME -o jsonpath='{.data.token}'
+The output of the above command will provide token 
