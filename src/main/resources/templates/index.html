@@ -3,8 +3,13 @@
   <body>
     <h1>Monitoring Dashboard</h1>
     </br>
+    <a href="/logout">Logout</a>
+    {{#isAdmin}}
       <a href="/env/home">Manage Environments</a>
-      <a href="/reports/index">Get Trends</a>
+      <a href="/registration">Add Users</a>
+    {{/isAdmin}}
+    <a href="/deployedApplications/home">Deployed Applications</a>
+    <a href="/reports/index">Get Trends</a>
     </br>
     </br>
     <h3>Available Environments</h3>
